@@ -57,9 +57,14 @@ const RouterList = () => {
             threshold: 1.0
         };
         const observer = new window.IntersectionObserver(handleObserver, option);
-        if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+        const currentLoadMoreRef = loadMoreRef.current;
+        if (currentLoadMoreRef) {
+            observer.observe(currentLoadMoreRef);
+        }
         return () => {
-            if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
+            if (currentLoadMoreRef) {
+                observer.unobserve(currentLoadMoreRef);
+            }
         };
     }, [handleObserver, sortedRouters.length]);
 

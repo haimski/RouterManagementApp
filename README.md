@@ -13,38 +13,26 @@ The Drivenets Router Management Backend is a simple REST API server that simulat
 
 ## Installation & Setup
 
-1. Install backend dependencies:
+1. Install backend & frontend dependencies:
 
 ```bash
-cd backend
-npm install
+npm run install:all
 ```
 
-2. Install frontend dependencies:
+2. for PRODUCTION only
 
 ```bash
-cd frontend
-npm install
+npm run build
 ```
 
 ## Running the Application
 
-1. Start the backend server:
+1. Start the App (backend & frontend server):
 
 ```bash
-cd backend
-npm start
+npm run start:all
 ```
-
 The API will be available at port 3001
-
-2. In a new terminal, start the frontend application:
-
-```bash
-cd frontend
-npm start
-```
-
 The frontend will be available at port 3000
 
 ### API Endpoints

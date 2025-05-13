@@ -1,0 +1,26 @@
+{
+  "name": "routermanagementapp",
+  "version": "1.0.0",
+  "description": "This project consists of a React frontend application and a mock backend server using json-server for the Drivenets Router Management interview application.",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "start:all": "npm run start:backend & npm run start:frontend",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haimski/RouterManagementApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/haimski/RouterManagementApp/issues"
+  },
+  "homepage": "https://github.com/haimski/RouterManagementApp#readme"
+}

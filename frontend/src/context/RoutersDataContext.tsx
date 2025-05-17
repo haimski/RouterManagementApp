@@ -1,4 +1,4 @@
-import React, {useContext, createContext, useState, useEffect } from 'react';
+import React, {useContext, createContext, useState, useEffect, use, useReducer } from 'react';
 import { getRouters } from '../api/RoutersApi';
 
 interface Router {
@@ -8,27 +8,69 @@ interface Router {
     updatedAt: string;
 }
 
-interface RouterDataContextProps {
+interface RouterDataState  {
     routers: Router[];
     loading: boolean;
     error: string | null;
-}
+};
 
-const RouterDataContext = createContext<RouterDataContextProps | undefined>(undefined);
+type Action = 
+    | { type: 'SET_ROUTERS'; payload: Router[] }
+    | { type: 'SET_LOADING'; payload: boolean }
+    | { type: 'SET_ERROR'; payload: string | null }
+    | { type: 'ADD_ROUTER'; payload: Router }
+    | { type: 'DELETE_ROUTER'; payload: string }
+    | { type: 'UPDATE_ROUTER'; payload: Router };
+
+const initialState = {
+    routers: [] as Router[],
+    loading: true,
+    error: null as string | null,
+};
+
+const RouterDataContext = createContext<{
+    state: RouterDataState;
+    dispatch: React.Dispatch<Action>;
+} | undefined>(undefined);
+
+function reducer(state: RouterDataState, action: Action): RouterDataState {
+    switch (action.type) {
+        case 'SET_ROUTERS':
+            return { ...state, routers: action.payload };
+        case 'SET_LOADING':
+            return { ...state, loading: action.payload };
+        case 'SET_ERROR':
+            return { ...state, error: action.payload };
+        case 'ADD_ROUTER':
+            return { ...state, routers: [...state.routers, action.payload] };
+        case 'DELETE_ROUTER':
+            return { ...state, routers: state.routers.filter((router) => router.id !== action.payload) };
+        case 'UPDATE_ROUTER':
+            return {
+                ...state,
+                routers: state.routers.map((router) =>
+                    router.id === action.payload.id ? { ...router, ...action.payload } : router
+                )
+            };
+        default:
+            return state;
+    }
+} 
+
 export const RouterDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [routers, setRouters] = useState<Router[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     const fetchRouters = async () => {
+      dispatch({ type: 'SET_LOADING', payload: true });
       try {
         const data = await getRouters();
-        setRouters(data);
+        dispatch({ type: 'SET_ROUTERS', payload: data });
+        dispatch({ type: 'SET_ERROR', payload: null });
       } catch (err) {
-        setError('Failed to fetch routers data');
+        dispatch({ type: 'SET_ERROR', payload: 'Failed to fetch routers data' });
       } finally {
-        setLoading(false);
+        dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
 
@@ -36,7 +78,7 @@ export const RouterDataProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, []);
 
   return (
-    <RouterDataContext.Provider value={{ routers, loading, error }}>
+    <RouterDataContext.Provider value={{ state, dispatch }}>
       {children}
     </RouterDataContext.Provider>
   );

@@ -15,9 +15,11 @@ interface Router {
 interface RouterCardProps {
     router: Router;
     handleDetails: (router: Router) => void;
+    handleEditDetails: (router: Router) => void;
+    handleDeleteRouter: (router: Router) => void;
 }
 
-const RouterCard = ({ router, handleDetails }: RouterCardProps) => {
+const RouterCard = ({ router, handleDetails, handleEditDetails, handleDeleteRouter }: RouterCardProps) => {
     return (
         <Card sx={{ minWidth: 275, margin: 2 }}>
             <CardContent>
@@ -33,6 +35,8 @@ const RouterCard = ({ router, handleDetails }: RouterCardProps) => {
             </CardContent>
             <CardActions>
                 <Button size="small" onClick={() => handleDetails(router)}>More Details</Button>
+                <Button size="small" onClick={() => handleEditDetails(router)}>Edit</Button>
+                <Button size="small" onClick={() => handleDeleteRouter(router)}>Delete</Button>
             </CardActions>
         </Card>
     );

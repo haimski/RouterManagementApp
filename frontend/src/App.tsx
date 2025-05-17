@@ -11,7 +11,7 @@ function App() {
     <RouterDataProvider>
       <RouterFilterProvider>
       <div className="App-main">
-        <h2 className="placeholder-title">DriveNet Routers</h2>
+        <h2 className="placeholder-title">Routers Management App</h2>
         <RouterFilterControls />
         <RouterList />
       </div>

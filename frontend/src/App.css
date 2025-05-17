@@ -104,8 +104,10 @@
     gap: 2em;
 }
 
-.details-modal .MuiBox-root {
-    position: absolute;
+.details-modal div.MuiBox-root,
+.add-router-modal div.MuiBox-root,
+.edit-router-modal div.MuiBox-root {
+    position: relative;
     top: 25%;
     left: 37.5%;
 }

@@ -3,6 +3,9 @@ import { useRouterData } from '../context/RoutersDataContext';
 import { useRouterFilter } from '../context/RoutersFilterContext';
 import RouterDetails from './RouterDetails';
 import RouterCard from './RouterCard';
+import Button from '@mui/material/Button';
+import AddRouter from './AddRouter';
+import EditRouterDetails from './EditRouterDetails';
 
 interface Router {
     id: string;
@@ -14,16 +17,16 @@ interface Router {
 const PAGE_SIZE = 20;
 
 const RouterList = () => {
-    const { state } = useRouterFilter();
-    const { routerType, sortOption } = state;
-    const { routers, loading, error } = useRouterData();
+    const { state: filterState } = useRouterFilter();
+    const { routerType, sortOption } = filterState;
+    const { state: routerDataState, dispatch } = useRouterData();
+    const { routers, loading, error } = routerDataState;
     const [selectedRouter, setSelectedRouter] = useState<Router | null>(null);
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    const [addRouterOpen, setAddRouterOpen] = useState(false);
+    const [editRouterOpen, setEditRouterOpen] = useState(false);
+    const [currentRouter, setCurrentRouter] = useState<Router | null>(null);
     const loadMoreRef = useRef<HTMLDivElement | null>(null);
-
-    const handleRouterDetails = (router: Router) => {
-        setSelectedRouter(router);
-    };
 
     const filteredRouters = routerType === 'all'
         ? routers
@@ -71,11 +74,57 @@ const RouterList = () => {
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
+    const handleRouterDetails = (router: Router) => {
+        setSelectedRouter(router);
+    };
+
+    const handleAddRouter = (newRouter: Router) => {
+        dispatch({ type: 'ADD_ROUTER', payload: newRouter });
+        setAddRouterOpen(false);
+        setCurrentRouter(null);
+    };
+
+    const handleDeleteRouter = (router: Router) => {
+        const filteredRouters = routers.filter(r => r.id !== router.id);
+        dispatch({ type: 'DELETE_ROUTER', payload: router.id });
+    };
+
+    const handleEditDetails = (router: Router) => {
+        setCurrentRouter(router);
+        setEditRouterOpen(true);
+    };
+
+    const handleUpdateRouter = (updatedRouter: Router) => {
+        dispatch({ type: 'UPDATE_ROUTER', payload: updatedRouter });
+        setEditRouterOpen(false);
+    };
+
     return (
         <>
+            <div className="action-panel">
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={() => setAddRouterOpen(true)}
+                    sx={{ margin: 2 }}
+                    className="add-router-button"
+                >
+                    Add Router
+                </Button>
+                <AddRouter 
+                    open={addRouterOpen} 
+                    showModal={setAddRouterOpen}
+                    handleAddRouter={handleAddRouter} />
+            </div>
             <div className="router-list">
                 {sortedRouters.slice(0, visibleCount).map((router: Router) => (
-                    <RouterCard key={router.id} router={router} handleDetails={handleRouterDetails} />
+                    <RouterCard 
+                        key={router.id} 
+                        router={router} 
+                        handleDetails={handleRouterDetails} 
+                        handleEditDetails={handleEditDetails}
+                        handleDeleteRouter={handleDeleteRouter}
+                    />
                 ))}
                 {visibleCount < sortedRouters.length && (
                     <div ref={loadMoreRef} style={{ height: 1 }} />
@@ -88,6 +137,12 @@ const RouterList = () => {
                     />
                 )}
             </div>
+            <EditRouterDetails
+                open={editRouterOpen}
+                showModal={setEditRouterOpen}
+                currentRouter={currentRouter ?? undefined}
+                handleUpdateRouter={handleUpdateRouter}
+            />
         </>
     );
 };

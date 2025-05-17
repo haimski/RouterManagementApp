@@ -51,10 +51,7 @@ const RouterFilterControls = () => {
                     <option value={'updatedAt'}>Last Updated</option>
                 </NativeSelect>
             </FormControl>
-            <FormControl>
-                <InputLabel variant="standard" htmlFor="router-filter-text">
-                    Filter Routers
-                </InputLabel>
+            <FormControl fullWidth>
                 <input
                     type="text"
                     id="router-filter-text"

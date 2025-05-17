@@ -104,6 +104,11 @@
     gap: 2em;
 }
 
+.filter-container div {
+    width: 100%; 
+    display: flex;
+}
+
 .details-modal div.MuiBox-root,
 .add-router-modal div.MuiBox-root,
 .edit-router-modal div.MuiBox-root {

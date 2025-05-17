@@ -18,7 +18,7 @@ const PAGE_SIZE = 20;
 
 const RouterList = () => {
     const { state: filterState } = useRouterFilter();
-    const { routerType, sortOption } = filterState;
+    const { routerType, sortOption, filterText } = filterState;
     const { state: routerDataState, dispatch } = useRouterData();
     const { routers, loading, error } = routerDataState;
     const [selectedRouter, setSelectedRouter] = useState<Router | null>(null);
@@ -39,6 +39,10 @@ const RouterList = () => {
             return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
         }
         return 0;
+    });
+
+    const filteredAndSortedRouters = sortedRouters.filter(router => {
+        return router.name.toLowerCase().includes(filterText.toLowerCase());
     });
 
     // Infinite scroll handler
@@ -116,7 +120,7 @@ const RouterList = () => {
                     handleAddRouter={handleAddRouter} />
             </div>
             <div className="router-list">
-                {sortedRouters.slice(0, visibleCount).map((router: Router) => (
+                {filteredAndSortedRouters.slice(0, visibleCount).map((router: Router) => (
                     <RouterCard 
                         key={router.id} 
                         router={router} 

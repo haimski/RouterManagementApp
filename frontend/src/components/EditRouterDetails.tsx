@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';

@@ -1,4 +1,4 @@
-import React, {useContext, createContext, useState, useEffect, use, useReducer } from 'react';
+import React, {useContext, createContext, useEffect, useReducer } from 'react';
 import { getRouters } from '../api/RoutersApi';
 
 interface Router {

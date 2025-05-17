@@ -26,7 +26,7 @@ const AddRouter = ({ open, showModal, handleAddRouter }: AddRouterProps) => {
         if (open) {
             setRouterType('');
             setRouterName('');
-            setLastUpdated('');
+            setLastUpdated(new Date().toLocaleDateString());
         }
     }, [open]);
 
@@ -81,7 +81,7 @@ const AddRouter = ({ open, showModal, handleAddRouter }: AddRouterProps) => {
                         label="Last Updated"
                         variant="outlined"
                         fullWidth
-                        value={new Date().toLocaleDateString()}
+                        value={lastUpdated}
                         InputProps={{
                             readOnly: true,
                         }}

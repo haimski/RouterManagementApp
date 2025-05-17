@@ -85,7 +85,6 @@ const RouterList = () => {
     };
 
     const handleDeleteRouter = (router: Router) => {
-        const filteredRouters = routers.filter(r => r.id !== router.id);
         dispatch({ type: 'DELETE_ROUTER', payload: router.id });
     };
 

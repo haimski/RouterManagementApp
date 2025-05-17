@@ -33,6 +33,7 @@ const EditRouterDetails = ({open, showModal, currentRouter, handleUpdateRouter}:
             setRouterType(currentRouter.type);
             setRouterName(currentRouter.name);
             setRouterId(currentRouter.id);
+            setLastUpdated(new Date().toLocaleDateString());
         }
     }
     , [open, currentRouter]);
